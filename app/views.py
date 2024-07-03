@@ -17,7 +17,7 @@ def get_cliente(idcliente):
 
 def create_cliente():
     #recepciona los datos enviados en la petición en formato json (obviamente lo convierte en un diccionario)
-    data = request.jason
+    data = request.json
     new_cliente = Cliente(
         nombre = data['nombre'], 
         apellido= data['apellido'], 
