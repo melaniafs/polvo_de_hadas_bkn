@@ -38,7 +38,7 @@ class Cliente:
         cursor.close()
         return clientes
         
-
+    @staticmethod 
     def get_by_id(idcliente):
         db = get_db()
         cursor = db.cursor()
@@ -53,14 +53,12 @@ class Cliente:
         db = get_db()
         cursor = db.cursor()
         if self.idcliente:
-            cursor.execute("""
-                 UPDATE clientes SET nombre = %s, apellido = %s, birthday= %s, country = %s, correo = %s, password = %s 
-                WHERE idcliente = %s""", (self.nombre, self.apellido, self.birthday, self.country, self.correo,self.password))
-            self.idcliente
+            cursor.execute("UPDATE clientes SET nombre = %s, apellido = %s, birthday= %s, country = %s, correo = %s, password = %s WHERE idcliente = %s;", 
+                           (self.nombre, self.apellido, self.birthday, self.country, self.correo, self.password))
+            self.idcliente = cursor.lastrowid
         else:
-            cursor.execute("""
-                INSERT INTO clientes (nombre, apellido, birthday, country, correo, password) 
-                VALUES (%s, %s, %s, %s, %s, %s)""", (self.nombre, self.apellido, self.birthday, self.country, self.correo,self.password))
+            cursor.execute("INSERT INTO clientes (nombre, apellido, birthday, country, correo, password) VALUES (%s, %s, %s, %s, %s, %s)", 
+                           (self.nombre, self.apellido, self.birthday, self.country, self.correo,self.password))
             self.idcliente = cursor.lastrowid
         db.commit()
         cursor.close()

@@ -16,9 +16,9 @@ CORS(app)
 
 app.route('/', methods=['GET'] )(index)
 app.route('/api/registros', methods=['GET'])(get_all_clientes)
-app.route('/api/registros/create', methods=['POST'])(create_cliente)
-app.route('/api/registros/delete', methods=['DELETE'])(delete_cliente)
-app.route('/api/registros/modificar', methods=['PUT'])(update_cliente)
+app.route('/api/registros', methods=['POST'])(create_cliente)
+app.route('/api/registros/<int:idcliente>', methods=['DELETE'])(delete_cliente)
+app.route('/api/registros/<int:idcliente>', methods=['PUT'])(update_cliente)
 app.route('/api/registros/<int:idcliente>', methods=['GET'])(get_cliente)
 
 if __name__=='__main__':

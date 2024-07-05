@@ -6,8 +6,7 @@ def index():
 
 def get_all_clientes():
     clientes = Cliente.get_all()
-    list_clientes = [clientes.serialize() for cliente in clientes]
-    return jsonify(list_clientes)
+    return jsonify([cliente.serialize() for cliente in clientes])
 
 def get_cliente(idcliente):
     cliente = Cliente.get_by_id(idcliente)
@@ -22,8 +21,8 @@ def create_cliente():
         nombre = data['nombre'], 
         apellido= data['apellido'], 
         birthday=data['birthday'], 
-        country=data['coutry'], 
-        correo=['correo'], 
+        country=data['country'], 
+        correo=data['correo'], 
         password=data['password']
     )
     new_cliente.save()
@@ -41,7 +40,7 @@ def update_cliente(idcliente):
     cliente.country = data['country']
     cliente.correo = data['correo']
     cliente.password = data['password']
-    cliente.save
+    cliente.save()
     return jsonify ({'message': 'Cliente modificado con éxito'})
 
 
