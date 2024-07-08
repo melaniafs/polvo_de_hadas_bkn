@@ -12,17 +12,6 @@ class Cliente:
         self.correo=correo
         self.password=password
 
-    def serialize(self):
-        return {
-            'idcliente': self.idcliente,
-            'nombre': self.nombre,
-            'apellido': self.apellido,
-            'birthday': self.birthday,
-            'country': self.country,
-            'correo': self.correo,
-            'password':self.password
-
-        }
     
     @staticmethod # el métodos estatico se utiliza para poder utilizar la clase sin instanciarla
     def get_all():
@@ -38,11 +27,11 @@ class Cliente:
         cursor.close()
         return clientes
         
-    @staticmethod 
+    @staticmethod
     def get_by_id(idcliente):
         db = get_db()
         cursor = db.cursor()
-        cursor.execute("SELECT * FROM clientes WHERE idcliente = %s", (idcliente))
+        cursor.execute("SELECT * FROM clientes WHERE idcliente = %s", (idcliente,))
         row = cursor.fetchone()
         cursor.close()
         if row:
@@ -53,12 +42,15 @@ class Cliente:
         db = get_db()
         cursor = db.cursor()
         if self.idcliente:
-            cursor.execute("UPDATE clientes SET nombre = %s, apellido = %s, birthday= %s, country = %s, correo = %s, password = %s WHERE idcliente = %s;", 
-                           (self.nombre, self.apellido, self.birthday, self.country, self.correo, self.password))
-            self.idcliente = cursor.lastrowid
+            cursor.execute("""
+                 UPDATE clientes SET nombre = %s, apellido = %s, birthday= %s, country = %s, correo = %s, password = %s 
+                WHERE idcliente = %s""", 
+                (self.nombre, self.apellido, self.birthday, self.country, self.correo,self.password,self.idcliente))
         else:
-            cursor.execute("INSERT INTO clientes (nombre, apellido, birthday, country, correo, password) VALUES (%s, %s, %s, %s, %s, %s)", 
-                           (self.nombre, self.apellido, self.birthday, self.country, self.correo,self.password))
+            cursor.execute("""
+                INSERT INTO clientes (nombre, apellido, birthday, country, correo, password) 
+                VALUES (%s, %s, %s, %s, %s, %s)""", 
+                (self.nombre, self.apellido, self.birthday, self.country, self.correo,self.password))
             self.idcliente = cursor.lastrowid
         db.commit()
         cursor.close()
@@ -66,8 +58,19 @@ class Cliente:
     def delete(self):
         db = get_db()
         cursor = db.cursor()
-        cursor.execute("DELETE FROM clientes WHERE idclientes = %s", (self.idcliente))
+        cursor.execute("DELETE FROM clientes WHERE idcliente = %s", (self.idcliente,))
         db.commit()
         cursor.close()
 
+    def serialize(self):
+        return {
+            'idcliente': self.idcliente,
+            'nombre': self.nombre,
+            'apellido': self.apellido,
+            'birthday': self.birthday,
+            'country': self.country,
+            'correo': self.correo,
+            'password':self.password
+
+        }
         

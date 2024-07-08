@@ -5,13 +5,16 @@ def index():
     return '<h1>Hola mundo con flask 🐍</h1>'
 
 def get_all_clientes():
+    
     clientes = Cliente.get_all()
-    return jsonify([cliente.serialize() for cliente in clientes])
+    list_clientes = [cliente.serialize() for cliente in clientes]
+    return jsonify(list_clientes)
 
 def get_cliente(idcliente):
+    
     cliente = Cliente.get_by_id(idcliente)
     if not cliente:
-        return jsonify({'message': 'Cliente no encontrado'}), 404
+        return jsonify({'message': 'Cliente no encontrado'}), 405
     return jsonify(cliente.serialize())
 
 def create_cliente():
